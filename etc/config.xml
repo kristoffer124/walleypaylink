@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/config.xsd">
+    <default>
+        <payment>
+            <walley_paylink>
+                <active>1</active>
+                <model>Walley\PayLink\Model\Payment\PayLink</model>
+                <title>PayLink (Walley)</title>
+                <can_use_internal>1</can_use_internal>
+                <can_use_checkout>0</can_use_checkout>
+            </walley_paylink>
+        </payment>
+    </default>
+</config>

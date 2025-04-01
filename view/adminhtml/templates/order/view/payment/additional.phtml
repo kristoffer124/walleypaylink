@@ -1,0 +1,9 @@
+<?php
+/** @var $block \Walley\PayLink\Block\Adminhtml\Order\View\Payment\Additional  */
+?>
+<?php if ($block->getPayLink()): ?>
+    <div>
+        <strong>PayLink:</strong>
+        <a href="<?php echo $block->escapeUrl($block->getPayLink()) ?>" target="_blank"><?php echo $block->escapeHtml($block->getPayLink()) ?></a>
+    </div>
+<?php endif; ?>
