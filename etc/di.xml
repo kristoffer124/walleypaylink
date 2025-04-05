@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="\Webbhuset\CollectorCheckout\Controller\Validation\Index">
+        <plugin name="walley_paylink_validation_callback"
+                type="Walley\PayLink\Plugin\ValidationCallback"/>
+    </type>
+    <type name="\Webbhuset\CollectorCheckout\Controller\Notification\Index">
+        <plugin name="walley_paylink_notification_callback"
+                type="Walley\PayLink\Plugin\NotificationCallback" />
+    </type>
+</config>
