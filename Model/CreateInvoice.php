@@ -38,9 +38,14 @@ class CreateInvoice
                 ->addObject($invoice)
                 ->addObject($order)
                 ->save();
+            $order->addCommentToStatusHistory("Invoice created programmatically - success", false, false);
+            $order->setState(\Magento\Sales\Model\Order::STATE_PROCESSING)
+                ->setStatus(\Magento\Sales\Model\Order::STATE_PROCESSING);
             return true;
         } catch (\Exception $e) {
+            $order->addCommentToStatusHistory("Invoice not created programmatically - failure", false, false);
             return false;
         }
+
     }
 }
