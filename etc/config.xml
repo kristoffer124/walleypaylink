@@ -8,7 +8,17 @@
                 <title>PayLink (Walley)</title>
                 <can_use_internal>1</can_use_internal>
                 <can_use_checkout>0</can_use_checkout>
+                <sms_distribute>1</sms_distribute>
             </walley_paylink>
         </payment>
+        <carriers>
+            <walley_paylink_shipping>
+                <active>1</active>
+                <title>PayLink Shipping (Walley)</title>
+                <name>PayLink Shipping Method</name>
+                <price>0</price>
+                <model>Walley\PayLink\Model\Carrier\PayLinkShipping</model>
+            </walley_paylink_shipping>
+        </carriers>
     </default>
 </config>

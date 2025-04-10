@@ -3,22 +3,43 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/system_file.xsd">
     <system>
         <section id="payment" type="text">
-            <group id="walley_paylink" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="walley_paylink" type="text" sortOrder="401" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Walley PayLink</label>
-                <field id="active" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="active" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Activate</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="sms_distribute" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="sms_distribute" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>SMS distribute paylink</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends>
                         <field id="active">1</field>
                     </depends>
                 </field>
-                <field id="test_mode" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="test_mode" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Test Mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+        <section id="carriers" type="text">
+            <group id="walley_paylink_shipping" sortOrder="400" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Walley PayLink Shipping</label>
+                <field id="active" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Shipping Method</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="title" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Shipping Method Title</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="price" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Shipping Method Price</label>
                     <depends>
                         <field id="active">1</field>
                     </depends>

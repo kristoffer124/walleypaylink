@@ -28,6 +28,8 @@ class UpdateShippingMethod
         if (!$shippingAddress) {
             throw new \RuntimeException('No shipping address.');
         }
+        $order->setShippingMethod($newShippingMethod)
+            ->setShippingDescription($newShippingDescription);
         $oldNet = (float)$shippingAddress->getShippingAmount();
         $oldTax = (float)$shippingAddress->getShippingTaxAmount();
         $oldIncl = $oldNet + $oldTax;
