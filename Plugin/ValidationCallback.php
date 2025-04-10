@@ -7,6 +7,7 @@ use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
+use Walley\PayLink\Model\CreateInvoice;
 use Walley\PayLink\Model\GetCheckoutInformation;
 use Walley\PayLink\Model\UpdateShippingAddress;
 use Walley\PayLink\Model\UpdateShippingMethod;
@@ -24,11 +25,13 @@ class ValidationCallback
     private GetCheckoutInformation $getCheckoutInformation;
     private OrderRepositoryInterface $orderRepository;
     private UpdateShippingAddress $updateShippingAddress;
+    private CreateInvoice $createInvoice;
 
     public function __construct(
         RequestInterface $request,
         Manager $manager,
         JsonFactory $jsonResult,
+        CreateInvoice $createInvoice,
         UpdateShippingAddress $updateShippingAddress,
         OrderRepositoryInterface $orderRepository,
         GetCheckoutInformation $getCheckoutInformation,
@@ -41,6 +44,7 @@ class ValidationCallback
         $this->getCheckoutInformation = $getCheckoutInformation;
         $this->orderRepository = $orderRepository;
         $this->updateShippingAddress = $updateShippingAddress;
+        $this->createInvoice = $createInvoice;
     }
 
     public function aroundExecute(
@@ -62,12 +66,11 @@ class ValidationCallback
             $jsonResult->setHttpResponseCode(400)
                 ->setData(['message' => 'The order is not new']);
         }
-
         $checkoutData = $this->getCheckoutInformation->execute($order);
         $this->updateShippingMethod($order, $checkoutData);
         $this->updateShippingAddress($order, $checkoutData);
+        $this->createInvoice->execute($order);
         $this->orderRepository->save($order);
-
         $jsonResult->setHttpResponseCode(200)
             ->setData(['message' => 'Validation callback approved']);
 
