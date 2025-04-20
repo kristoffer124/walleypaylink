@@ -114,7 +114,7 @@ class ValidationCallback
 
     private function getShippingAmount(array $shippingData):float
     {
-        return (float) $shippingData['shipments'][0]['shippingChoice']['fee'] ?? 0.00;
+        return $shippingData['shippingFee'] ?? 0.00;
     }
 
     private function getShippingVat(array $shippingData):float
