@@ -28,15 +28,18 @@ class UpdateShippingMethod
         if (!$shippingAddress) {
             throw new \RuntimeException('No shipping address.');
         }
+        $oldNet  = (float)$order->getShippingAmount();
+        $oldTax  = (float)$order->getShippingTaxAmount();
+        $oldIncl = $oldNet + $oldTax;
+
+        $taxRate = $vat / 100;
+        $newNet  = $newShippingAmount / (1 + $taxRate);
+        $newTax  = $newShippingAmount - $newNet;
+        $diff    = $newShippingAmount - $oldIncl;
+
         $order->setShippingMethod($newShippingMethod)
             ->setShippingDescription($newShippingDescription);
-        $oldNet = (float)$shippingAddress->getShippingAmount();
-        $oldTax = (float)$shippingAddress->getShippingTaxAmount();
-        $oldIncl = $oldNet + $oldTax;
-        $taxRate = $vat / 100;
-        $newNet = $newShippingAmount / (1 + $taxRate);
-        $newTax = $newShippingAmount - $newNet;
-        $diff = $newShippingAmount - $oldIncl;
+
         $shippingAddress->setShippingMethod($newShippingMethod)
             ->setShippingDescription($newShippingDescription)
             ->setShippingAmount($newNet)
@@ -45,15 +48,21 @@ class UpdateShippingMethod
             ->setBaseShippingTaxAmount($newTax)
             ->setShippingInclTax($newShippingAmount)
             ->setBaseShippingInclTax($newShippingAmount);
+
         $order->setShippingAmount($newNet)
             ->setBaseShippingAmount($newNet)
+            ->setShippingTaxAmount($newTax)
+            ->setBaseShippingTaxAmount($newTax)
             ->setShippingInclTax($newShippingAmount)
             ->setBaseShippingInclTax($newShippingAmount)
             ->setTaxAmount($order->getTaxAmount() - $oldTax + $newTax)
             ->setBaseTaxAmount($order->getBaseTaxAmount() - $oldTax + $newTax)
             ->setGrandTotal($order->getGrandTotal() + $diff)
-            ->setBaseGrandTotal($order->getBaseGrandTotal() + $diff);
+            ->setBaseGrandTotal($order->getBaseGrandTotal() + $diff)
+            ->setTotalDue($order->getTotalDue() + $diff)
+            ->setBaseTotalDue($order->getBaseTotalDue() + $diff);
+
         $this->orderHandler->setDeliveryCheckoutShipmentData($order, $shippingData);
-        $order->addCommentToStatusHistory("Shipment method updated by customer", false, false);
+        $order->addCommentToStatusHistory('Shipment method updated by customer', false, false);
     }
 }
